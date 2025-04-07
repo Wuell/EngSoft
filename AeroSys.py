@@ -143,3 +143,34 @@ class Atendente(Funcionario):
         passenger.flight = flight
         passenger.boarding_pass = boarding_pass
         print(f"{passenger.name} foi registrado no voo {flight.number} com assento {seat}.")
+
+class Piloto(Funcionario):
+    def __init__(self, name, role, employee_id, password):
+        super().__init__(name, role, employee_id, password)
+        self.current_flight = None  # Referência ao voo atual (caso esteja em serviço)
+
+    def assign_flight(self, flight):
+        """Associa o piloto a um voo"""
+        self.current_flight = flight
+        print(f"{self.name} foi designado para o voo {flight.number}.")
+
+    def report_flight(self):
+        """Relata o voo atual em que o piloto está"""
+        if self.current_flight:
+            print(f"\n🛫 Relatório de Voo do Piloto {self.name}:")
+            print(f"- Voo: {self.current_flight.number}")
+            print(f"- Origem: {self.current_flight.origin}")
+            print(f"- Destino: {self.current_flight.destination}")
+            print(f"- Aeronave: {self.current_flight.aircraft}")
+            print(f"- Status: {self.current_flight.status}")
+            print(f"- Partida: {self.current_flight.departure_time.strftime('%H:%M')}")
+        else:
+            print(f"{self.name} não está associado a nenhum voo.")
+
+    def end_flight(self):
+        """Finaliza o voo atual do piloto"""
+        if self.current_flight:
+            print(f"{self.name} finalizou o voo {self.current_flight.number}.")
+            self.current_flight = None
+        else:
+            print(f"{self.name} não possui voo em andamento.")
