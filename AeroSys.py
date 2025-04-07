@@ -195,6 +195,14 @@ class Piloto(Funcionario):
         else:
             print(f"{self.name} não está associado a nenhum voo.")
 
+    def start_flight(self):
+        """Atualiza o status do voo para 'Em andamento'"""
+        if self.current_flight:
+            self.current_flight.status = "Em andamento"
+            print(f"{self.name} iniciou o voo {self.current_flight.number}.")
+        else:
+            print(f"{self.name} não possui voo atribuído para iniciar.")
+
     def end_flight(self):
         """Finaliza o voo atual e atualiza o status"""
         if self.current_flight:
