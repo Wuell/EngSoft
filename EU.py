@@ -3,14 +3,16 @@ import datetime
 class Aeronave:
     instances = []
 
-    def __init__(self, model : str, capacity : int, schedule : list, status : str, seats : list):
+    def __init__(self, id : str, model : str, capacity : int, schedule : list, status : str, seats : list):
+        Aeronave.instances.append(self)
+        self.id = id
         self.model = model
         self.capacity = capacity
         self.status = status
         self.schedule = schedule
         self.seats = seats
 
-    def programar_agenda(self, event : str):
+    def adicionar_agenda(self, event : str):
         self.schedule.append(event)
         self.schedule.sort()
     
@@ -19,7 +21,7 @@ class Aeronave:
 
 
 class Cartao_Embarque:
-    def __init__(self, id : int, assento : str, portao : str, horario_embarque):
+    def __init__(self, id : str, assento : str, portao : str, horario_embarque : datetime.time):
         self.id = id
         self.assento = assento
         self.portao = portao
@@ -45,12 +47,12 @@ class Voo:
         self.pilot = pilot
         
     def alocar_assento(self)->str:
-        try:
-            assento = self.seats_avaliable[0]
-            self.seats_avaliable.pop(0)
-        except:
+        if len(self.seats_avaliable) == 0:
             print("O voo nao possui mais assentos disponiveis.")
-            return -1
-        return assento
+            exit()
 
+        assento = self.seats_avaliable[0]
+        self.seats_avaliable.pop(0)
+        return assento
+    
 
