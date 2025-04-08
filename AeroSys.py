@@ -3,7 +3,9 @@ from datetime import datetime
 class Aeronave:
     instances = []
 
-    def __init__(self, model: str, capacity: int, schedule: list, status: str, seats: list):
+    def __init__(self, id: str,  model: str, capacity: int, schedule: list, status: str, seats: list):
+        # identificação da aeronave
+        self.id = id
         # Modelo da aeronave
         self.model = model
         # Capacidade total de assentos
@@ -15,7 +17,7 @@ class Aeronave:
         # Lista de assentos disponíveis
         self.seats = seats
 
-    def programar_agenda(self, event: str):
+    def adicionar_agenda(self, event: str):
         """Adiciona um evento à agenda da aeronave"""
         self.schedule.append(event)
         self.schedule.sort()
@@ -26,7 +28,7 @@ class Aeronave:
 
 
 class CartaoEmbarque:
-    def __init__(self, id: int, assento: str, portao: str, horario_embarque: datetime):
+    def __init__(self, id: str, assento: str, portao: str, horario_embarque: datetime):
         # Identificador único do cartão
         self.id = id
         # Assento reservado
@@ -41,7 +43,8 @@ class Voo:
     instances = []
     routes = {1: ("casa", "casa2")}
 
-    def __init__(self, number: int, route: int, status: str, aircraft, time_depart: datetime, time_arrival: datetime, pilot):
+    def __init__(self, number: int, route: int, status: str, aircraft: Aeronave,
+                time_depart: datetime, time_arrival: datetime, pilot: str):
         # Número identificador do voo
         self.number = number
         # Origem e destino definidos pelo índice de rota
@@ -61,14 +64,14 @@ class Voo:
         self.pilot = pilot
         Voo.instances.append(self)
 
-    def alocar_assento(self):
+    def alocar_assento(self)->str:
         """Retorna o primeiro assento disponível e o remove da lista"""
-        try:
-            assento = self.seats_avaliable[0]
-            self.seats_avaliable.pop(0)
-        except:
-            print("O voo não possui mais assentos disponíveis.")
-            return -1
+        if len(self.seats_avaliable) == 0:
+            print("O voo nao possui mais assentos disponiveis.")
+            return
+
+        assento = self.seats_avaliable[0]
+        self.seats_avaliable.pop(0)
         return assento
 
 
